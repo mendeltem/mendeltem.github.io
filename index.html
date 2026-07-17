@@ -4,7 +4,154 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Startseite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* ---------- Themes ---------- */
+        /* Jedes Theme definiert dieselben Variablen. Standard: Neon Pink */
+        :root, body[data-theme="neon-pink"] {
+            --bg: #0d0511;
+            --bg-glow: radial-gradient(ellipse 900px 500px at 50% -10%, rgba(255, 0, 170, 0.18), transparent);
+            --surface: #1a0b22;
+            --surface-hover: #26102f;
+            --line: #3d1a4d;
+            --text: #ffe9f8;
+            --muted: #b478a8;
+            --accent: #ff2ea6;
+            --accent-2: #00e5ff;
+            --accent-text: #14020d;
+            --glow: 0 0 12px rgba(255, 46, 166, 0.8), 0 0 40px rgba(255, 46, 166, 0.35);
+            --chip-glow: 0 0 14px rgba(255, 46, 166, 0.45);
+        }
+        body[data-theme="cyberpunk"] {
+            --bg: #0a0a12;
+            --bg-glow: radial-gradient(ellipse 900px 500px at 50% -10%, rgba(0, 240, 255, 0.12), transparent);
+            --surface: #14141f;
+            --surface-hover: #1c1c2c;
+            --line: #2c2c44;
+            --text: #eafcff;
+            --muted: #7d8aa8;
+            --accent: #00f0ff;
+            --accent-2: #fcee0a;
+            --accent-text: #001416;
+            --glow: 0 0 12px rgba(0, 240, 255, 0.8), 0 0 40px rgba(0, 240, 255, 0.3);
+            --chip-glow: 0 0 14px rgba(0, 240, 255, 0.4);
+        }
+        body[data-theme="synthwave"] {
+            --bg: #16072e;
+            --bg-glow: linear-gradient(180deg, rgba(255, 92, 141, 0.14), transparent 55%);
+            --surface: #240f42;
+            --surface-hover: #2f1555;
+            --line: #46226e;
+            --text: #ffeaf6;
+            --muted: #b58bd6;
+            --accent: #ff5c8d;
+            --accent-2: #7a5cff;
+            --accent-text: #200310;
+            --glow: 0 0 12px rgba(255, 92, 141, 0.8), 0 0 40px rgba(122, 92, 255, 0.4);
+            --chip-glow: 0 0 14px rgba(255, 92, 141, 0.45);
+        }
+        body[data-theme="jungle"] {
+            --bg: #08130b;
+            --bg-glow: radial-gradient(ellipse 900px 500px at 50% -10%, rgba(80, 220, 100, 0.1), transparent);
+            --surface: #0f2015;
+            --surface-hover: #16301f;
+            --line: #23402c;
+            --text: #e8f8ec;
+            --muted: #7ba888;
+            --accent: #4ade80;
+            --accent-2: #facc15;
+            --accent-text: #06150a;
+            --glow: 0 0 10px rgba(74, 222, 128, 0.6), 0 0 30px rgba(74, 222, 128, 0.25);
+            --chip-glow: 0 0 12px rgba(74, 222, 128, 0.35);
+        }
+        body[data-theme="matrix"] {
+            --bg: #000600;
+            --bg-glow: radial-gradient(ellipse 900px 500px at 50% -10%, rgba(0, 255, 65, 0.08), transparent);
+            --surface: #041008;
+            --surface-hover: #07180c;
+            --line: #0f3318;
+            --text: #c8ffd6;
+            --muted: #4d9960;
+            --accent: #00ff41;
+            --accent-2: #00ff41;
+            --accent-text: #001404;
+            --glow: 0 0 12px rgba(0, 255, 65, 0.8), 0 0 40px rgba(0, 255, 65, 0.3);
+            --chip-glow: 0 0 14px rgba(0, 255, 65, 0.4);
+        }
+        body[data-theme="lcars"] { /* Star Trek */
+            --bg: #000000;
+            --bg-glow: none;
+            --surface: #111119;
+            --surface-hover: #1b1b28;
+            --line: #33334d;
+            --text: #ffffff;
+            --muted: #9999ff;
+            --accent: #ff9c00;
+            --accent-2: #cc99cc;
+            --accent-text: #1a0f00;
+            --glow: 0 0 10px rgba(255, 156, 0, 0.6);
+            --chip-glow: 0 0 10px rgba(204, 153, 204, 0.35);
+        }
+        body[data-theme="miami"] {
+            --bg: #140a1e;
+            --bg-glow: linear-gradient(180deg, rgba(255, 111, 97, 0.16), rgba(255, 46, 166, 0.08) 40%, transparent 70%);
+            --surface: #221231;
+            --surface-hover: #2d1940;
+            --line: #45265e;
+            --text: #fff0ea;
+            --muted: #c093ae;
+            --accent: #ff6f61;
+            --accent-2: #2de2e6;
+            --accent-text: #230a06;
+            --glow: 0 0 12px rgba(255, 111, 97, 0.7), 0 0 36px rgba(45, 226, 230, 0.3);
+            --chip-glow: 0 0 14px rgba(255, 111, 97, 0.4);
+        }
+        body[data-theme="ocean"] {
+            --bg: #03101c;
+            --bg-glow: radial-gradient(ellipse 900px 500px at 50% -10%, rgba(56, 189, 248, 0.12), transparent);
+            --surface: #082031;
+            --surface-hover: #0c2b42;
+            --line: #164058;
+            --text: #e6f6ff;
+            --muted: #6d9cb8;
+            --accent: #38bdf8;
+            --accent-2: #34d399;
+            --accent-text: #02131d;
+            --glow: 0 0 12px rgba(56, 189, 248, 0.7), 0 0 36px rgba(56, 189, 248, 0.25);
+            --chip-glow: 0 0 12px rgba(56, 189, 248, 0.35);
+        }
+        body[data-theme="sakura"] { /* helles Pink-Theme */
+            --bg: #fff3f8;
+            --bg-glow: radial-gradient(ellipse 900px 500px at 50% -10%, rgba(255, 122, 182, 0.18), transparent);
+            --surface: #ffffff;
+            --surface-hover: #ffe6f1;
+            --line: #ffc4dd;
+            --text: #4a1330;
+            --muted: #b56d92;
+            --accent: #ff4f9a;
+            --accent-2: #a855f7;
+            --accent-text: #ffffff;
+            --glow: 0 0 12px rgba(255, 79, 154, 0.45);
+            --chip-glow: 0 0 12px rgba(255, 79, 154, 0.3);
+        }
+        body[data-theme="nacht"] { /* das ruhige Bernstein-Theme */
+            --bg: #10131a;
+            --bg-glow: radial-gradient(ellipse 900px 500px at 50% -10%, rgba(240, 180, 84, 0.06), transparent);
+            --surface: #181c26;
+            --surface-hover: #202634;
+            --line: #262c3a;
+            --text: #e9ecf2;
+            --muted: #7e8698;
+            --accent: #f0b454;
+            --accent-2: #f0b454;
+            --accent-text: #1a1408;
+            --glow: none;
+            --chip-glow: none;
+        }
+
+        /* ---------- Basis ---------- */
         * {
             margin: 0;
             padding: 0;
@@ -12,198 +159,331 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            background-image: var(--bg-glow);
+            background-repeat: no-repeat;
+            color: var(--text);
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 40px 20px;
+            justify-content: center;
+            padding: 4vh 20px 60px;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         .container {
-            max-width: 1200px;
             width: 100%;
+            max-width: 760px;
+            animation: fadein 0.5s ease both;
         }
 
-        /* Grid für Kacheln */
-        .tiles-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 20px;
-            margin-bottom: 50px;
+        @keyframes fadein {
+            from { opacity: 0; transform: translateY(8px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
-        .tile {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 30px 20px;
-            text-align: center;
-            text-decoration: none;
-            color: white;
-            transition: all 0.3s ease;
-            border: 2px solid rgba(255, 255, 255, 0.1);
+        @media (prefers-reduced-motion: reduce) {
+            .container { animation: none; }
+            .chip, .search-box, .theme-btn { transition: none !important; }
         }
 
-        .tile:hover {
-            transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.2);
-            border-color: rgba(255, 255, 255, 0.3);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        /* ---------- Theme-Leiste ---------- */
+        .theme-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 36px;
         }
 
-        .tile-icon {
-            font-size: 48px;
-            margin-bottom: 10px;
-        }
-
-        .tile-name {
-            font-size: 16px;
+        .theme-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            color: var(--muted);
+            font: inherit;
+            font-size: 12.5px;
             font-weight: 500;
+            padding: 6px 12px;
+            cursor: pointer;
+            transition: border-color 0.15s, color 0.15s, box-shadow 0.15s;
         }
 
-        /* Google Suche */
-        .search-container {
+        .theme-btn:hover {
+            color: var(--text);
+            border-color: var(--accent);
+        }
+
+        .theme-btn.active {
+            color: var(--text);
+            border-color: var(--accent);
+            box-shadow: var(--chip-glow);
+        }
+
+        .theme-dot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background: var(--dot, #888);
+            box-shadow: 0 0 6px var(--dot, transparent);
+        }
+
+        /* ---------- Kopf: Uhr ---------- */
+        header {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
         }
 
+        .clock {
+            font-size: 68px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            font-variant-numeric: tabular-nums;
+            line-height: 1.1;
+            color: var(--accent);
+            text-shadow: var(--glow);
+        }
+
+        .greeting {
+            margin-top: 8px;
+            color: var(--muted);
+            font-size: 17px;
+        }
+
+        .greeting .date {
+            color: var(--accent-2);
+        }
+
+        /* ---------- Suche ---------- */
         .search-box {
             display: flex;
-            max-width: 600px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 25px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            align-items: center;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            margin-bottom: 48px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .search-box:focus-within {
+            border-color: var(--accent);
+            box-shadow: var(--chip-glow);
         }
 
         .search-input {
             flex: 1;
+            background: transparent;
             border: none;
-            padding: 15px 25px;
-            font-size: 16px;
             outline: none;
+            color: var(--text);
+            font: inherit;
+            font-size: 17px;
+            padding: 16px 20px;
+        }
+
+        .search-input::placeholder {
+            color: var(--muted);
+        }
+
+        .search-hint {
+            color: var(--muted);
+            font-size: 13px;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            padding: 2px 8px;
+            margin-right: 12px;
+            user-select: none;
         }
 
         .search-btn {
-            background: #4285f4;
-            color: white;
+            background: var(--accent);
+            color: var(--accent-text);
             border: none;
-            padding: 15px 30px;
-            font-size: 16px;
+            border-radius: 10px;
+            font: inherit;
+            font-size: 15px;
+            font-weight: 600;
+            padding: 10px 22px;
+            margin: 6px;
             cursor: pointer;
-            transition: background 0.3s;
+            box-shadow: var(--chip-glow);
         }
 
         .search-btn:hover {
-            background: #357ae8;
+            filter: brightness(1.08);
         }
 
-        /* AI Buttons */
-        .ai-buttons {
+        /* ---------- Link-Gruppen ---------- */
+        .group {
+            margin-bottom: 32px;
+        }
+
+        .group-label {
+            color: var(--accent-2);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .chips {
             display: flex;
-            gap: 20px;
-            justify-content: center;
             flex-wrap: wrap;
+            gap: 10px;
         }
 
-        .ai-btn {
+        .chip {
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            padding: 15px 30px;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 255, 255, 0.2);
+            background: var(--surface);
+            border: 1px solid var(--line);
             border-radius: 12px;
-            color: white;
+            padding: 12px 18px;
+            color: var(--text);
             text-decoration: none;
-            font-size: 18px;
-            font-weight: 600;
-            transition: all 0.3s ease;
+            font-size: 15px;
+            font-weight: 500;
+            transition: background 0.15s, border-color 0.15s, transform 0.15s, box-shadow 0.15s;
         }
 
-        .ai-btn:hover {
-            background: rgba(255, 255, 255, 0.25);
+        .chip:hover {
+            background: var(--surface-hover);
+            border-color: var(--accent);
+            box-shadow: var(--chip-glow);
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
         }
 
-        .ai-icon {
-            font-size: 24px;
+        .chip:focus-visible,
+        .search-btn:focus-visible,
+        .theme-btn:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
         }
 
-        @media (max-width: 768px) {
-            .tiles-grid {
-                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-                gap: 15px;
-            }
+        .chip-icon {
+            font-size: 18px;
+        }
 
-            .tile {
-                padding: 20px 15px;
-            }
-
-            .tile-icon {
-                font-size: 36px;
-            }
-
-            .tile-name {
-                font-size: 14px;
-            }
+        @media (max-width: 480px) {
+            .clock { font-size: 48px; }
+            .chip { padding: 11px 14px; font-size: 14px; }
+            .search-hint { display: none; }
+            .theme-btn span.label { display: none; } /* mobil nur Farbpunkte */
+            .theme-btn { padding: 8px; }
         }
     </style>
 </head>
-<body>
+<body data-theme="neon-pink">
     <div class="container">
-        <!-- Kacheln -->
-        <div class="tiles-grid">
-            <a href="https://www.youtube.com" class="tile" target="_blank">
-                <div class="tile-icon">📺</div>
-                <div class="tile-name">YouTube</div>
-            </a>
 
-            <a href="https://mail.google.com" class="tile" target="_blank">
-                <div class="tile-icon">✉️</div>
-                <div class="tile-name">Gmail</div>
-            </a>
+        <!-- Theme-Auswahl -->
+        <nav class="theme-bar" id="themeBar" aria-label="Farbschema wählen">
+            <button class="theme-btn" data-set="neon-pink"><span class="theme-dot" style="--dot:#ff2ea6"></span><span class="label">Neon Pink</span></button>
+            <button class="theme-btn" data-set="cyberpunk"><span class="theme-dot" style="--dot:#00f0ff"></span><span class="label">Cyberpunk</span></button>
+            <button class="theme-btn" data-set="synthwave"><span class="theme-dot" style="--dot:#7a5cff"></span><span class="label">Synthwave</span></button>
+            <button class="theme-btn" data-set="miami"><span class="theme-dot" style="--dot:#ff6f61"></span><span class="label">Miami</span></button>
+            <button class="theme-btn" data-set="sakura"><span class="theme-dot" style="--dot:#ff9fc7"></span><span class="label">Sakura</span></button>
+            <button class="theme-btn" data-set="jungle"><span class="theme-dot" style="--dot:#4ade80"></span><span class="label">Jungle</span></button>
+            <button class="theme-btn" data-set="matrix"><span class="theme-dot" style="--dot:#00ff41"></span><span class="label">Matrix</span></button>
+            <button class="theme-btn" data-set="ocean"><span class="theme-dot" style="--dot:#38bdf8"></span><span class="label">Ocean</span></button>
+            <button class="theme-btn" data-set="lcars"><span class="theme-dot" style="--dot:#ff9c00"></span><span class="label">Star Trek</span></button>
+            <button class="theme-btn" data-set="nacht"><span class="theme-dot" style="--dot:#f0b454"></span><span class="label">Nacht</span></button>
+        </nav>
 
-            <a href="https://www.reddit.com" class="tile" target="_blank">
-                <div class="tile-icon">🤖</div>
-                <div class="tile-name">Reddit</div>
-            </a>
+        <header>
+            <div class="clock" id="clock">–:–</div>
+            <div class="greeting"><span id="greeting">Hallo</span> · <span class="date" id="date"></span></div>
+        </header>
 
-            <a href="https://twitter.com" class="tile" target="_blank">
-                <div class="tile-icon">🐦</div>
-                <div class="tile-name">Twitter</div>
-            </a>
+        <form action="https://www.google.com/search" method="get" class="search-box">
+            <input type="text" name="q" id="search" class="search-input" placeholder="Google durchsuchen…" autocomplete="off" autofocus>
+            <span class="search-hint">/</span>
+            <button type="submit" class="search-btn">Suchen</button>
+        </form>
 
-            <a href="https://de.finance.yahoo.com/quote/NVDA/" class="tile" target="_blank">
-                <div class="tile-icon">📈</div>
-                <div class="tile-name">NVDA Chart</div>
-            </a>
+        <div class="group">
+            <div class="group-label">Täglich</div>
+            <div class="chips">
+                <a href="https://www.youtube.com" class="chip" target="_blank" rel="noopener"><span class="chip-icon">📺</span>YouTube</a>
+                <a href="https://mail.google.com" class="chip" target="_blank" rel="noopener"><span class="chip-icon">✉️</span>Gmail</a>
+                <a href="https://www.reddit.com" class="chip" target="_blank" rel="noopener"><span class="chip-icon">👽</span>Reddit</a>
+                <a href="https://twitter.com" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🐦</span>Twitter</a>
+            </div>
         </div>
 
-        <!-- Google Suche -->
-        <div class="search-container">
-            <form action="https://www.google.com/search" method="get" class="search-box">
-                <input type="text" name="q" class="search-input" placeholder="Google durchsuchen..." autocomplete="off">
-                <button type="submit" class="search-btn">Suchen</button>
-            </form>
+        <div class="group">
+            <div class="group-label">Märkte</div>
+            <div class="chips">
+                <a href="https://de.finance.yahoo.com/quote/NVDA/" class="chip" target="_blank" rel="noopener"><span class="chip-icon">📈</span>NVIDIA</a>
+                <a href="https://de.finance.yahoo.com/quote/HY9H.SG/" class="chip" target="_blank" rel="noopener"><span class="chip-icon">💾</span>SK Hynix</a>
+            </div>
         </div>
 
-        <!-- AI Buttons -->
-        <div class="ai-buttons">
-            <a href="https://claude.ai" class="ai-btn" target="_blank">
-                <span class="ai-icon">🤖</span>
-                <span>Claude</span>
-            </a>
-            <a href="https://gemini.google.com" class="ai-btn" target="_blank">
-                <span class="ai-icon">✨</span>
-                <span>Gemini</span>
-            </a>
+        <div class="group">
+            <div class="group-label">KI &amp; Code</div>
+            <div class="chips">
+                <a href="https://claude.ai" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🤖</span>Claude</a>
+                <a href="https://gemini.google.com" class="chip" target="_blank" rel="noopener"><span class="chip-icon">✨</span>Gemini</a>
+                <a href="https://github.com/mendeltem?tab=repositories" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🐙</span>Meine Repos</a>
+            </div>
         </div>
     </div>
+
+    <script>
+        // ---------- Uhr & Begrüßung ----------
+        const clockEl = document.getElementById('clock');
+        const dateEl = document.getElementById('date');
+        const greetingEl = document.getElementById('greeting');
+        const searchEl = document.getElementById('search');
+
+        function update() {
+            const now = new Date();
+            clockEl.textContent = now.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+            dateEl.textContent = now.toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long' });
+            const h = now.getHours();
+            greetingEl.textContent = h < 5 ? 'Gute Nacht' : h < 11 ? 'Guten Morgen' : h < 18 ? 'Guten Tag' : 'Guten Abend';
+        }
+        update();
+        setInterval(update, 10000);
+
+        // Taste "/" springt ins Suchfeld
+        document.addEventListener('keydown', function (e) {
+            if (e.key === '/' && document.activeElement !== searchEl) {
+                e.preventDefault();
+                searchEl.focus();
+            }
+        });
+
+        // ---------- Themes ----------
+        const themeBar = document.getElementById('themeBar');
+        const buttons = themeBar.querySelectorAll('.theme-btn');
+
+        function setTheme(name) {
+            document.body.dataset.theme = name;
+            buttons.forEach(function (b) {
+                b.classList.toggle('active', b.dataset.set === name);
+            });
+            try {
+                localStorage.setItem('theme', name);
+            } catch (e) { /* z.B. Privatmodus: Auswahl gilt dann nur für diese Sitzung */ }
+        }
+
+        themeBar.addEventListener('click', function (e) {
+            const btn = e.target.closest('.theme-btn');
+            if (btn) setTheme(btn.dataset.set);
+        });
+
+        // Gespeichertes Theme laden, sonst Neon Pink
+        let saved = null;
+        try {
+            saved = localStorage.getItem('theme');
+        } catch (e) { }
+        setTheme(saved && document.querySelector('[data-set="' + saved + '"]') ? saved : 'neon-pink');
+    </script>
 </body>
 </html>
