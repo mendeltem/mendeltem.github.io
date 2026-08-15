@@ -1,5 +1,7 @@
 # mendeltem.github.io
 
+![Bergsee im Morgenlicht](readme.jpg)
+
 Meine Browser-Startseite. Eine einzelne HTML-Datei mit Uhr, Wetter, Suchfeld
 und Linkliste, dazu ein Ordner mit Hintergrundbildern.
 
