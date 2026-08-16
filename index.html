@@ -8,6 +8,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Startseite</title>
+    <!-- Das Symbol malt setTheme() in der Akzentfarbe neu, siehe faviconPaint() -->
+    <link rel="icon" type="image/svg+xml" id="favicon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23ff2ea6%22%2F%3E%3Cg%20stroke%3D%22%2314020d%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M32%2032V18%22%2F%3E%3Cpath%20d%3D%22M32%2032h11%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -718,6 +720,7 @@
         const wxEl = document.getElementById('wx');
         const bgBase = document.getElementById('bgBase');
         const bgTop = document.getElementById('bgTop');
+        const faviconEl = document.getElementById('favicon');
         const themeBar = document.getElementById('themeBar');
         const buttons = Array.prototype.slice.call(themeBar.querySelectorAll('.theme-btn'));
         const chips = Array.prototype.slice.call(document.querySelectorAll('.chip'));
@@ -830,12 +833,28 @@
             return i;
         }
 
+        // ---------- Symbol in der Tableiste ----------
+        // Wechselt mit dem Theme. Das SVG steckt als Data-URI im href, eine
+        // eigene Datei braucht es nicht. Safari zeigt SVG-Symbole nicht an
+        // und bleibt beim Standard.
+        function faviconPaint() {
+            const css = getComputedStyle(document.body);
+            const accent = css.getPropertyValue('--accent').trim() || '#ff2ea6';
+            const ink = css.getPropertyValue('--accent-text').trim() || '#14020d';
+            const svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">'
+                + '<rect width="64" height="64" rx="14" fill="' + accent + '"/>'
+                + '<g stroke="' + ink + '" stroke-width="6" stroke-linecap="round">'
+                + '<path d="M32 32V18"/><path d="M32 32h11"/></g></svg>';
+            faviconEl.href = 'data:image/svg+xml,' + encodeURIComponent(svg);
+        }
+
         function setTheme(name, manual) {
             document.body.dataset.theme = name;
             buttons.forEach(function (b) {
                 b.classList.toggle('active', b.dataset.set === name);
             });
             rotStart(name);
+            faviconPaint();
             if (manual) {
                 try {
                     localStorage.setItem('theme', JSON.stringify({ name: name, slot: slotNow() }));
