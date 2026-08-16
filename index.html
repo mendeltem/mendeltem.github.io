@@ -260,7 +260,7 @@
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            padding: 4vh 20px 60px;
+            padding: 3vh 20px 28px;
             transition: background-color 0.3s, color 0.3s;
         }
 
@@ -311,7 +311,7 @@
 
         .container {
             width: 100%;
-            max-width: 760px;
+            max-width: 1180px;
             animation: fadein 0.5s ease both;
         }
 
@@ -333,7 +333,7 @@
             flex-wrap: wrap;
             justify-content: center;
             gap: 8px;
-            margin-bottom: 36px;
+            margin-bottom: 22px;
         }
 
         .theme-btn {
@@ -376,7 +376,7 @@
         /* ---------- Kopf: Uhr ---------- */
         header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 26px;
         }
 
         .clock {
@@ -402,7 +402,7 @@
 
         /* Kurzhilfe ganz unten, auf dem Handy ohne Tastatur ueberfluessig */
         .hint {
-            margin-top: 30px;
+            margin-top: 18px;
             text-align: center;
             font-size: 11.5px;
             line-height: 1.9;
@@ -489,7 +489,7 @@
             backdrop-filter: blur(12px) saturate(1.2);
             border: 1px solid var(--line);
             border-radius: 14px;
-            margin-bottom: 48px;
+            margin-bottom: 30px;
             transition: border-color 0.2s, box-shadow 0.2s;
         }
 
@@ -542,8 +542,17 @@
         }
 
         /* ---------- Link-Gruppen ---------- */
-        .group {
-            margin-bottom: 32px;
+        /* Die vier Gruppen stehen nebeneinander, damit die Seite ohne Scrollen
+           auf einen Schirm passt. Die Gewichte folgen dem Umfang der Gruppe:
+           "Meine Projekte" hat die meisten und laengsten Links und bekommt
+           deshalb den breitesten Streifen, "Maerkte" mit zwei kurzen den
+           schmalsten. Kommen Links dazu, ist das hier die Stellschraube.
+           Schmale Schirme stellen die Gruppen wieder untereinander. */
+        .groups {
+            display: grid;
+            grid-template-columns: 1fr 0.6fr 1fr 1.7fr;
+            gap: 26px 24px;
+            align-items: start;
         }
 
         .group-label {
@@ -600,6 +609,8 @@
         @media (max-width: 900px) {
             /* oben rechts sitzt auf schmalen Schirmen die Theme-Leiste */
             .wx-far { top: auto; bottom: 12px; right: 12px; }
+            /* zu schmal fuer vier Streifen: die Gruppen wieder untereinander */
+            .groups { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 480px) {
@@ -662,44 +673,46 @@
             <button type="submit" class="search-btn">Suchen</button>
         </form>
 
-        <div class="group">
-            <div class="group-label">Täglich</div>
-            <div class="chips">
-                <a href="https://www.youtube.com" class="chip" target="_blank" rel="noopener"><span class="chip-icon">📺</span>YouTube</a>
-                <a href="https://mail.google.com" class="chip" target="_blank" rel="noopener"><span class="chip-icon">✉️</span>Gmail</a>
-                <a href="https://drive.google.com/drive/home" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🗂️</span>Drive</a>
-                <a href="https://www.reddit.com" class="chip" target="_blank" rel="noopener"><span class="chip-icon">👽</span>Reddit</a>
-                <a href="https://twitter.com" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🐦</span>Twitter</a>
+        <div class="groups">
+            <div class="group">
+                <div class="group-label">Täglich</div>
+                <div class="chips">
+                    <a href="https://www.youtube.com" class="chip" target="_blank" rel="noopener"><span class="chip-icon">📺</span>YouTube</a>
+                    <a href="https://mail.google.com" class="chip" target="_blank" rel="noopener"><span class="chip-icon">✉️</span>Gmail</a>
+                    <a href="https://drive.google.com/drive/home" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🗂️</span>Drive</a>
+                    <a href="https://www.reddit.com" class="chip" target="_blank" rel="noopener"><span class="chip-icon">👽</span>Reddit</a>
+                    <a href="https://twitter.com" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🐦</span>Twitter</a>
+                </div>
             </div>
-        </div>
 
-        <div class="group">
-            <div class="group-label">Märkte</div>
-            <div class="chips">
-                <a href="https://de.finance.yahoo.com/quote/NVDA/" class="chip" target="_blank" rel="noopener"><span class="chip-icon">📈</span>NVIDIA</a>
-                <a href="https://de.finance.yahoo.com/quote/HY9H.SG/" class="chip" target="_blank" rel="noopener"><span class="chip-icon">💾</span>SK Hynix</a>
+            <div class="group">
+                <div class="group-label">Märkte</div>
+                <div class="chips">
+                    <a href="https://de.finance.yahoo.com/quote/NVDA/" class="chip" target="_blank" rel="noopener"><span class="chip-icon">📈</span>NVIDIA</a>
+                    <a href="https://de.finance.yahoo.com/quote/HY9H.SG/" class="chip" target="_blank" rel="noopener"><span class="chip-icon">💾</span>SK Hynix</a>
+                </div>
             </div>
-        </div>
 
-        <div class="group">
-            <div class="group-label">KI &amp; Code</div>
-            <div class="chips">
-                <a href="https://claude.ai" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🤖</span>Claude</a>
-                <a href="https://gemini.google.com" class="chip" target="_blank" rel="noopener"><span class="chip-icon">✨</span>Gemini</a>
-                <a href="https://github.com/mendeltem?tab=repositories" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🐙</span>Meine Repos</a>
-                <a href="https://www.researchgate.net/profile/Uchralt-Temuulen-2" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🔬</span>ResearchGate</a>
+            <div class="group">
+                <div class="group-label">KI &amp; Code</div>
+                <div class="chips">
+                    <a href="https://claude.ai" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🤖</span>Claude</a>
+                    <a href="https://gemini.google.com" class="chip" target="_blank" rel="noopener"><span class="chip-icon">✨</span>Gemini</a>
+                    <a href="https://github.com/mendeltem?tab=repositories" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🐙</span>Meine Repos</a>
+                    <a href="https://www.researchgate.net/profile/Uchralt-Temuulen-2" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🔬</span>ResearchGate</a>
+                </div>
             </div>
-        </div>
 
-        <div class="group">
-            <div class="group-label">Meine Projekte</div>
-            <div class="chips">
-                <a href="https://mendeltem.github.io/local-reference-manager/refman.html" class="chip" target="_blank" rel="noopener"><span class="chip-icon">📚</span>Referenzen</a>
-                <a href="https://mendeltem.github.io/mrt-atlas-trainer/" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🧠</span>MRT-Atlas-Trainer</a>
-                <a href="https://mendeltem.github.io/3D-Body-Workshop/" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🧍</span>3D Body Workshop</a>
-                <a href="https://mendeltem.github.io/AI_Companys/nvidia-oekosystem.html" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🟩</span>NVIDIA-Ökosystem</a>
-                <a href="https://mendeltem.github.io/Supply_Atlas3D/" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🌍</span>Supply Atlas 3D</a>
-                <a href="https://mendeltem.github.io/menschenlesen/" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🕵️</span>Menschen lesen</a>
+            <div class="group">
+                <div class="group-label">Meine Projekte</div>
+                <div class="chips">
+                    <a href="https://mendeltem.github.io/local-reference-manager/refman.html" class="chip" target="_blank" rel="noopener"><span class="chip-icon">📚</span>Referenzen</a>
+                    <a href="https://mendeltem.github.io/mrt-atlas-trainer/" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🧠</span>MRT-Atlas-Trainer</a>
+                    <a href="https://mendeltem.github.io/3D-Body-Workshop/" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🧍</span>3D Body Workshop</a>
+                    <a href="https://mendeltem.github.io/AI_Companys/nvidia-oekosystem.html" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🟩</span>NVIDIA-Ökosystem</a>
+                    <a href="https://mendeltem.github.io/Supply_Atlas3D/" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🌍</span>Supply Atlas 3D</a>
+                    <a href="https://mendeltem.github.io/menschenlesen/" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🕵️</span>Menschen lesen</a>
+                </div>
             </div>
         </div>
 
