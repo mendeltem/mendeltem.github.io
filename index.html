@@ -542,17 +542,23 @@
         }
 
         /* ---------- Link-Gruppen ---------- */
-        /* Die vier Gruppen stehen nebeneinander, damit die Seite ohne Scrollen
-           auf einen Schirm passt. Die Gewichte folgen dem Umfang der Gruppe:
-           "Meine Projekte" hat die meisten und laengsten Links und bekommt
-           deshalb den breitesten Streifen, "Maerkte" mit zwei kurzen den
-           schmalsten. Kommen Links dazu, ist das hier die Stellschraube.
-           Schmale Schirme stellen die Gruppen wieder untereinander. */
+        /* Die Gruppen stehen nebeneinander, damit die Seite ohne Scrollen auf
+           einen Schirm passt: oben drei Streifen, "Maerkte" mit zwei kurzen
+           Links schmaler als die anderen. Schmale Schirme stellen alles wieder
+           untereinander. */
         .groups {
             display: grid;
-            grid-template-columns: 1fr 0.6fr 1fr 1.7fr;
-            gap: 26px 24px;
+            grid-template-columns: 1fr 0.55fr 1fr;
+            gap: 22px 24px;
             align-items: start;
+        }
+
+        /* "Meine Projekte" waechst am schnellsten und bekommt deshalb eine
+           eigene Reihe ueber die volle Breite. Dort stehen sechs Links in einer
+           Zeile; in einer schmalen Spalte waeren es zwei, und jedes neue
+           Projekt haette die Seite laenger gemacht. */
+        .group-wide {
+            grid-column: 1 / -1;
         }
 
         .group-label {
@@ -703,7 +709,7 @@
                 </div>
             </div>
 
-            <div class="group">
+            <div class="group group-wide">
                 <div class="group-label">Meine Projekte</div>
                 <div class="chips">
                     <a href="https://mendeltem.github.io/local-reference-manager/refman.html" class="chip" target="_blank" rel="noopener"><span class="chip-icon">📚</span>Referenzen</a>
@@ -713,6 +719,8 @@
                     <a href="https://mendeltem.github.io/Supply_Atlas3D/" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🌍</span>Supply Atlas 3D</a>
                     <a href="https://mendeltem.github.io/menschenlesen/" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🕵️</span>Menschen lesen</a>
                     <a href="https://mendeltem.github.io/EEG/" class="chip" target="_blank" rel="noopener"><span class="chip-icon">〰️</span>EEG Explorer</a>
+                    <a href="https://mendeltem.github.io/wetter/wetter.html" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🌦️</span>Wetter Berlin</a>
+                    <a href="https://mendeltem.github.io/nvidia-roadmap/" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🗺️</span>NVIDIA-Roadmap</a>
                 </div>
             </div>
         </div>

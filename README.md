@@ -25,9 +25,10 @@ Live: <https://mendeltem.github.io/>
   | `r` | Reddit | `yf` | Yahoo Finance |
   | `mp` | Google Maps | | |
 
-- **Links** in vier Gruppen: Täglich, Märkte, KI & Code, Meine Projekte. Sie
-  stehen auf breiten Schirmen nebeneinander, damit die Seite ohne Scrollen in
-  ein Bild passt; unter 900 px rutschen sie untereinander.
+- **Links** in vier Gruppen: Täglich, Märkte, KI & Code, Meine Projekte. Auf
+  breiten Schirmen stehen die ersten drei nebeneinander und „Meine Projekte"
+  über die volle Breite darunter, damit die Seite ohne Scrollen in ein Bild
+  passt; unter 900 px rutschen sie untereinander.
 - **Elf Farbschemata** mit passendem Hintergrundbild. Ekko und Space rotieren
   durch mehrere Bilder, 12 Sekunden Standzeit und 1,6 Sekunden Blende.
 
@@ -88,9 +89,10 @@ Objekt eintragen:
 Ab zwei Bildern läuft die Rotation von selbst; bei einem bleibt das Bild
 stehen, das im CSS unter `--bg-img` steht.
 
-Wird eine Gruppe deutlich länger, passt man die Spaltengewichte in `.groups`
-an — `grid-template-columns` gibt jeder Gruppe ihren Anteil, „Meine Projekte"
-steht mit `1.7fr` am breitesten, weil dort die längsten Namen liegen.
+Die Gruppen stehen in einem Grid: oben drei Streifen, darunter „Meine
+Projekte" über die volle Breite (`class="group group-wide"`). Diese Gruppe
+wächst am schnellsten, und über die ganze Breite passen sechs Links in eine
+Zeile statt zwei — neue Projekte verlängern die Seite dadurch kaum.
 
 **Theme hinzufügen** — einen `body[data-theme="name"]`-Block im CSS anlegen
 (dieselben Variablen wie bei den anderen), einen Knopf in `.theme-bar`
