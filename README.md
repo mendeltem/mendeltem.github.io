@@ -111,6 +111,38 @@ Markup nachziehen.
 - Schlägt `localStorage` fehl, etwa im Privatmodus, gilt die Themewahl nur für
   die geöffnete Seite.
 
+## Belegte Artikel
+
+`artikel.html` ist eine Übersicht, kein Inhalt. Sie listet auf, was in `artikel/`
+liegt, neueste zuerst, ein Beitrag pro Thema, und verlinkt auf die jeweilige
+Datei. Jeder Artikel ist eine eigenständige HTML-Seite mit eigener Belegliste
+und eigenem Aussehen. Das hat zwei Gründe: die Artikel bleiben unabhängig
+voneinander änderbar, und jeder bekommt eine eigene Adresse mit echtem Text,
+den Suchmaschinen und Link-Vorschauen lesen können.
+
+Ein neuer Artikel geht so:
+
+1. Die HTML-Datei nach `artikel/` legen, der Dateiname wird die Adresse.
+2. `python3 werkzeuge/feed-bauen.py` aus dem Wurzelverzeichnis aufrufen.
+3. Committen und pushen.
+
+Die Übersicht wird nie von Hand bearbeitet. Der Generator holt sich Titel,
+Anrisstext, Sprachen und Belegzahl aus der Artikeldatei selbst und das Datum
+aus dem ersten Commit der Datei. Was er falsch errät, überschreibt eine Zeile
+im Kopf des Artikels:
+
+```html
+<meta name="artikel:titel"    content="...">
+<meta name="artikel:teaser"   content="...">
+<meta name="artikel:thema"    content="Geschichte und Gesellschaft">
+<meta name="artikel:datum"    content="2026-08-30">
+<meta name="artikel:sprachen" content="de,en,mn">
+```
+
+Der Aufruf ist wiederholbar: zweimal hintereinander ändert nichts. Ohne die
+Marker `ARTIKEL:ANFANG` und `ARTIKEL:ENDE` in `artikel.html` bricht er ab,
+statt die Datei zu beschädigen.
+
 ## Veröffentlichen
 
 GitHub Pages liefert `main` aus. Ein Push genügt, nach ein bis zwei Minuten
