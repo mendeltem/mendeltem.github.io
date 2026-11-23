@@ -19,8 +19,10 @@ großen QR-Codes. Der QR-Code ist ein fertig eingebettetes SVG für
 für den Beamer, Klick oder `Esc` schließt.
 
 **Neue Vorlesung:** in der Liste „Lectures“ einen `<li class="item">` kopieren
-und Datum, Titel und die beiden Links anpassen. Das Datum steht zweimal, lesbar
-und als `datetime="JJJJ-MM-TT"`.
+und Datum, Titel, die Links zu Folien, PDF und Repo sowie die Übungen im Block
+`<div class="exercises">` anpassen. Hat eine Vorlesung keine Übungen, fällt der
+Block einfach weg. Das Datum steht zweimal, lesbar und als
+`datetime="JJJJ-MM-TT"`.
 
 **Neue Übungsseite:** in der Liste „Practice“ einen `<li>` mit
 `<a class="item item-link">` kopieren.
