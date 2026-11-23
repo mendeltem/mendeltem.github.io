@@ -2,12 +2,32 @@
 
 ![Bergsee im Morgenlicht](readme.jpg)
 
-Meine Browser-Startseite. Eine einzelne HTML-Datei mit Uhr, Wetter, Suchfeld
-und Linkliste, dazu ein Ordner mit Hintergrundbildern.
+Zwei Seiten unter einer Adresse:
 
-Live: <https://mendeltem.github.io/>
+- **Kursseite** unter <https://mendeltem.github.io/>: Vorlesungen und
+  Übungsseiten für den Unterricht, mit QR-Code zum Teilen. Das ist die Adresse,
+  die Studierende bekommen.
+- **Browser-Startseite** unter <https://mendeltem.github.io/home/>: eine
+  einzelne HTML-Datei mit Uhr, Wetter, Suchfeld und Linkliste, dazu ein Ordner
+  mit Hintergrundbildern. Die Kursseite verlinkt nicht dorthin.
 
-## Was die Seite kann
+## Kursseite
+
+`index.html` im Wurzelverzeichnis, englisch, ohne Skript außer dem Öffnen des
+großen QR-Codes. Der QR-Code ist ein fertig eingebettetes SVG für
+`https://mendeltem.github.io/`; ein Klick darauf zeigt ihn bildschirmfüllend
+für den Beamer, Klick oder `Esc` schließt.
+
+**Neue Vorlesung:** in der Liste „Lectures“ einen `<li class="item">` kopieren
+und Datum, Titel und die beiden Links anpassen. Das Datum steht zweimal, lesbar
+und als `datetime="JJJJ-MM-TT"`.
+
+**Neue Übungsseite:** in der Liste „Practice“ einen `<li>` mit
+`<a class="item item-link">` kopieren.
+
+## Startseite
+
+### Was die Seite kann
 
 - **Uhr und Begrüßung**, die sich nach der Tageszeit richtet, daneben eine
   zweite Zeitzone (Ulan-Bator) mit Hinweis, wenn dort schon der nächste Tag ist.
@@ -51,16 +71,19 @@ bis zum Ende des laufenden Abschnitts, danach übernimmt wieder die Uhr.
 ## Aufbau
 
 ```
-index.html      alles in einer Datei: CSS, Markup, JavaScript
-bg/<theme>/     die Hintergrundbilder, WebP, durchnummeriert ab 01
+index.html          Kursseite
+home/index.html     Startseite: CSS, Markup, JavaScript in einer Datei
+bg/<theme>/         Hintergrundbilder der Startseite, WebP, ab 01
 ```
+
+Die Startseite holt ihre Bilder eine Ebene höher, also mit `../bg/…`.
 
 Kein Build, keine Abhängigkeiten. Die Datei lokal im Browser öffnen genügt;
 auch das Wetter lädt aus einer `file://`-Seite, weil Open-Meteo
 `Access-Control-Allow-Origin: *` schickt. Von außen kommen nur die Schrift
 Space Grotesk von Google Fonts und die Wetterabfrage.
 
-## Anpassen
+## Startseite anpassen
 
 **Link hinzufügen** — eine Zeile in die passende `.chips`-Gruppe:
 
@@ -79,11 +102,11 @@ const routes = {
 ```
 
 **Hintergrundbild hinzufügen** — Datei nach `bg/<theme>/` legen und eine Zeile
-in `rotations` ergänzen. Ist die Helligkeit unpassend, statt des Pfads ein
+in `rotations` in `home/index.html` ergänzen. Ist die Helligkeit unpassend, statt des Pfads ein
 Objekt eintragen:
 
 ```js
-{ img: 'bg/space/08.webp', filter: 'brightness(0.8)' }
+{ img: '../bg/space/08.webp', filter: 'brightness(0.8)' }
 ```
 
 Ab zwei Bildern läuft die Rotation von selbst; bei einem bleibt das Bild

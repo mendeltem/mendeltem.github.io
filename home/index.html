@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<!-- Startseite mit eingebetteten Hintergruenden.
+     Alle zehn Bilder stecken als base64-data-URI in den Theme-Variablen,
+     die Datei laeuft also allein, ohne Ordner bg/. -->
+
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startseite</title>
+    <!-- Das Symbol malt setTheme() in der Akzentfarbe neu, siehe faviconPaint() -->
+    <link rel="icon" type="image/svg+xml" id="favicon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23ff2ea6%22%2F%3E%3Cg%20stroke%3D%22%2314020d%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M32%2032V18%22%2F%3E%3Cpath%20d%3D%22M32%2032h11%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ---------- Themes ---------- */
+        /* Jedes Theme definiert dieselben Variablen. Standard: Neon Pink
+           Neu pro Theme:
+           --bg-img    Hintergrundbild aus bg/
+           --bg-pos    Bildausschnitt bei background-size: cover
+           --bg-blur   Weichzeichnung, kaschiert die Hochskalierung kleiner Bilder
+           --veil      Verdunklung zwischen Bild und Inhalt
+           --shade     Textschatten fuer Lesbarkeit auf dem Bild                */
+        :root, body[data-theme="neon-pink"] {
+            --bg: #0d0511;
+            --bg-glow: radial-gradient(ellipse 900px 500px at 50% -10%, rgba(255, 0, 170, 0.18), transparent);
+            --bg-img: url("../bg/neon-pink/01.webp");
+            --bg-pos: center;
+            --bg-blur: 1px;
+            --veil: linear-gradient(180deg, rgba(13, 5, 17, 0.62), rgba(13, 5, 17, 0.86));
+            --surface: rgba(26, 11, 34, 0.62);
+            --surface-hover: rgba(38, 16, 47, 0.8);
+            --line: #3d1a4d;
+            --text: #ffe9f8;
+            --muted: #c78bba;
+            --accent: #ff2ea6;
+            --accent-2: #00e5ff;
+            --accent-text: #14020d;
+            --glow: 0 0 12px rgba(255, 46, 166, 0.8), 0 0 40px rgba(255, 46, 166, 0.35);
+            --chip-glow: 0 0 14px rgba(255, 46, 166, 0.45);
+            --shade: 0 2px 14px rgba(0, 0, 0, 0.6);
+        }
+        body[data-theme="cyberpunk"] {
+            --bg: #0a0a12;
+            --bg-glow: radial-gradient(ellipse 900px 500px at 50% -10%, rgba(0, 240, 255, 0.12), transparent);
+            --bg-img: url("../bg/cyberpunk/01.webp");
+            --bg-pos: center;
+            --bg-blur: 1.5px;
+            --veil: linear-gradient(180deg, rgba(10, 10, 18, 0.58), rgba(10, 10, 18, 0.86));
+            --surface: rgba(20, 20, 31, 0.62);
+            --surface-hover: rgba(28, 28, 44, 0.8);
+            --line: #2c2c44;
+            --text: #eafcff;
+            --muted: #8fa0bd;
+            --accent: #00f0ff;
+            --accent-2: #fcee0a;
+            --accent-text: #001416;
+            --glow: 0 0 12px rgba(0, 240, 255, 0.8), 0 0 40px rgba(0, 240, 255, 0.3);
+            --chip-glow: 0 0 14px rgba(0, 240, 255, 0.4);
+            --shade: 0 2px 14px rgba(0, 0, 0, 0.6);
+        }
+        body[data-theme="synthwave"] {
+            --bg: #16072e;
+            --bg-glow: linear-gradient(180deg, rgba(255, 92, 141, 0.14), transparent 55%);
+            --bg-img: url("../bg/synthwave/01.webp");
+            --bg-pos: center;
+            --bg-blur: 1.5px;
+            --veil: linear-gradient(180deg, rgba(22, 7, 46, 0.58), rgba(22, 7, 46, 0.88));
+            --surface: rgba(36, 15, 66, 0.62);
+            --surface-hover: rgba(47, 21, 85, 0.8);
+            --line: #46226e;
+            --text: #ffeaf6;
+            --muted: #c69ee6;
+            --accent: #ff5c8d;
+            --accent-2: #7a5cff;
+            --accent-text: #200310;
+            --glow: 0 0 12px rgba(255, 92, 141, 0.8), 0 0 40px rgba(122, 92, 255, 0.4);
+            --chip-glow: 0 0 14px rgba(255, 92, 141, 0.45);
+            --shade: 0 2px 14px rgba(0, 0, 0, 0.6);
+        }
+        body[data-theme="jungle"] {
+            --bg: #08130b;
+            --bg-glow: radial-gradient(ellipse 900px 500px at 50% -10%, rgba(80, 220, 100, 0.1), transparent);
+            --bg-img: url("../bg/jungle/01.webp");
+            --bg-pos: center;
+            --bg-blur: 3px;
+            --veil: linear-gradient(180deg, rgba(8, 19, 11, 0.70), rgba(8, 19, 11, 0.9));
+            --surface: rgba(15, 32, 21, 0.64);
+            --surface-hover: rgba(22, 48, 31, 0.8);
+            --line: #23402c;
+            --text: #e8f8ec;
+            --muted: #8ebd9b;
+            --accent: #4ade80;
+            --accent-2: #facc15;
+            --accent-text: #06150a;
+            --glow: 0 0 10px rgba(74, 222, 128, 0.6), 0 0 30px rgba(74, 222, 128, 0.25);
+            --chip-glow: 0 0 12px rgba(74, 222, 128, 0.35);
+            --shade: 0 2px 14px rgba(0, 0, 0, 0.65);
+        }
+        body[data-theme="matrix"] {
+            --bg: #000600;
+            --bg-glow: radial-gradient(ellipse 900px 500px at 50% -10%, rgba(0, 255, 65, 0.08), transparent);
+            --bg-img: url("../bg/matrix/01.webp");
+            --bg-pos: center;
+            --bg-blur: 1px;
+            --veil: linear-gradient(180deg, rgba(0, 6, 0, 0.5), rgba(0, 6, 0, 0.84));
+            --surface: rgba(4, 16, 8, 0.6);
+            --surface-hover: rgba(7, 24, 12, 0.8);
+            --line: #0f3318;
+            --text: #c8ffd6;
+            --muted: #5fb374;
+            --accent: #00ff41;
+            --accent-2: #00ff41;
+            --accent-text: #001404;
+            --glow: 0 0 12px rgba(0, 255, 65, 0.8), 0 0 40px rgba(0, 255, 65, 0.3);
+            --chip-glow: 0 0 14px rgba(0, 255, 65, 0.4);
+            --shade: 0 2px 14px rgba(0, 0, 0, 0.7);
+        }
+        body[data-theme="lcars"] { /* Star Trek */
+            --bg: #000000;
+            --bg-glow: none;
+            --bg-img: url("../bg/lcars/01.webp");
+            --bg-pos: center;
+            --bg-blur: 4px;
+            --veil: linear-gradient(180deg, rgba(0, 0, 0, 0.42), rgba(0, 0, 0, 0.78));
+            --surface: rgba(17, 17, 25, 0.6);
+            --surface-hover: rgba(27, 27, 40, 0.8);
+            --line: #33334d;
+            --text: #ffffff;
+            --muted: #a8a8ff;
+            --accent: #ff9c00;
+            --accent-2: #cc99cc;
+            --accent-text: #1a0f00;
+            --glow: 0 0 10px rgba(255, 156, 0, 0.6);
+            --chip-glow: 0 0 10px rgba(204, 153, 204, 0.35);
+            --shade: 0 2px 14px rgba(0, 0, 0, 0.7);
+        }
+        body[data-theme="miami"] {
+            --bg: #140a1e;
+            --bg-glow: linear-gradient(180deg, rgba(255, 111, 97, 0.16), rgba(255, 46, 166, 0.08) 40%, transparent 70%);
+            --bg-img: url("../bg/miami/01.webp");
+            --bg-pos: center;
+            --bg-blur: 4px;
+            --veil: linear-gradient(180deg, rgba(20, 10, 30, 0.78), rgba(20, 10, 30, 0.92));
+            --surface: rgba(34, 18, 49, 0.66);
+            --surface-hover: rgba(45, 25, 64, 0.82);
+            --line: #45265e;
+            --text: #fff0ea;
+            --muted: #d0a5bd;
+            --accent: #ff6f61;
+            --accent-2: #2de2e6;
+            --accent-text: #230a06;
+            --glow: 0 0 12px rgba(255, 111, 97, 0.7), 0 0 36px rgba(45, 226, 230, 0.3);
+            --chip-glow: 0 0 14px rgba(255, 111, 97, 0.4);
+            --shade: 0 2px 14px rgba(0, 0, 0, 0.6);
+        }
+        body[data-theme="ocean"] {
+            --bg: #03101c;
+            --bg-glow: radial-gradient(ellipse 900px 500px at 50% -10%, rgba(56, 189, 248, 0.12), transparent);
+            --bg-img: url("../bg/ocean/01.webp");
+            --bg-pos: center;
+            --bg-blur: 3px;
+            --veil: linear-gradient(180deg, rgba(3, 16, 28, 0.74), rgba(3, 16, 28, 0.9));
+            --surface: rgba(8, 32, 49, 0.64);
+            --surface-hover: rgba(12, 43, 66, 0.82);
+            --line: #164058;
+            --text: #e6f6ff;
+            --muted: #85b4cf;
+            --accent: #38bdf8;
+            --accent-2: #34d399;
+            --accent-text: #02131d;
+            --glow: 0 0 12px rgba(56, 189, 248, 0.7), 0 0 36px rgba(56, 189, 248, 0.25);
+            --chip-glow: 0 0 12px rgba(56, 189, 248, 0.35);
+            --shade: 0 2px 14px rgba(0, 0, 0, 0.6);
+        }
+        body[data-theme="sakura"] { /* helles Pink-Theme, heller Schleier statt dunklem */
+            --bg: #fff3f8;
+            --bg-glow: radial-gradient(ellipse 900px 500px at 50% -10%, rgba(255, 122, 182, 0.18), transparent);
+            --bg-img: url("../bg/sakura/01.webp");
+            --bg-pos: center;
+            --bg-blur: 3px;
+            --veil: linear-gradient(180deg, rgba(255, 243, 248, 0.58), rgba(255, 243, 248, 0.82));
+            --surface: rgba(255, 255, 255, 0.72);
+            --surface-hover: rgba(255, 230, 241, 0.88);
+            --line: #ffc4dd;
+            --text: #4a1330;
+            --muted: #a85c83;
+            --accent: #ff4f9a;
+            --accent-2: #a855f7;
+            --accent-text: #ffffff;
+            --glow: 0 0 12px rgba(255, 79, 154, 0.45);
+            --chip-glow: 0 0 12px rgba(255, 79, 154, 0.3);
+            --shade: 0 2px 14px rgba(255, 255, 255, 0.85);
+        }
+        body[data-theme="space"] { /* Nebel: Violett auf Tiefschwarz */
+            --bg: #05040e;
+            --bg-glow: radial-gradient(ellipse 900px 500px at 50% -10%, rgba(150, 120, 255, 0.16), transparent);
+            /* Bild eins steht hier, die Rotation ueber alle sieben macht
+               rotations.space im Skript, der Verlauf darunter ist die
+               Rueckfallebene.                                                  */
+            --bg-img: url("../bg/space/01.webp"),
+                radial-gradient(ellipse 65% 80% at 28% 25%, rgba(126, 96, 255, 0.30), transparent 70%),
+                radial-gradient(ellipse 55% 70% at 75% 60%, rgba(255, 92, 168, 0.22), transparent 70%),
+                radial-gradient(ellipse 90% 60% at 50% 110%, rgba(24, 22, 74, 0.60), transparent 70%),
+                linear-gradient(160deg, #07061a 0%, #0d0a24 50%, #05040e 100%);
+            --bg-pos: center;
+            --bg-blur: 0px;
+            --veil: linear-gradient(180deg, rgba(5, 4, 14, 0.50), rgba(5, 4, 14, 0.86));
+            --surface: rgba(18, 18, 40, 0.62);
+            --surface-hover: rgba(28, 26, 58, 0.82);
+            --line: #2b2955;
+            --text: #ece9ff;
+            --muted: #9c98c8;
+            --accent: #9d8cff;
+            --accent-2: #ff7ab8;
+            --accent-text: #0a0718;
+            --glow: 0 0 12px rgba(157, 140, 255, 0.75), 0 0 40px rgba(157, 140, 255, 0.30);
+            --chip-glow: 0 0 14px rgba(157, 140, 255, 0.40);
+            --shade: 0 2px 14px rgba(0, 0, 0, 0.75);
+        }
+        body[data-theme="ekko"] { /* Zaun-Teal auf warmem Rost */
+            --bg: #0d0a0b;
+            --bg-glow: radial-gradient(ellipse 900px 500px at 50% -10%, rgba(46, 230, 196, 0.14), transparent);
+            /* Bild eins steht hier, die Rotation ueber alle sechs macht
+               rotations.ekko im Skript. Der Verlauf darunter traegt, falls
+               eine Datei fehlt oder JavaScript aus ist.                        */
+            --bg-img: url("../bg/ekko/01.webp"),
+                radial-gradient(ellipse 70% 90% at 22% 30%, rgba(46, 230, 196, 0.30), transparent 70%),
+                radial-gradient(ellipse 60% 80% at 78% 65%, rgba(178, 12, 89, 0.32), transparent 70%),
+                radial-gradient(ellipse 90% 60% at 50% 110%, rgba(92, 42, 31, 0.55), transparent 70%),
+                linear-gradient(150deg, #16100f 0%, #241715 45%, #0e1416 100%);
+            --bg-pos: center;
+            --bg-blur: 0px;     /* 1680 px breite Quellen, Weichzeichnen unnoetig */
+            --veil: linear-gradient(180deg, rgba(13, 10, 11, 0.62), rgba(13, 10, 11, 0.88));
+            --surface: rgba(18, 30, 30, 0.62);
+            --surface-hover: rgba(24, 44, 43, 0.82);
+            --line: #1f3f3c;
+            --text: #eaf7f3;
+            --muted: #93b0aa;
+            --accent: #2ee6c4;
+            --accent-2: #ff3d7f;
+            --accent-text: #04140f;
+            --glow: 0 0 12px rgba(46, 230, 196, 0.75), 0 0 40px rgba(46, 230, 196, 0.28);
+            --chip-glow: 0 0 14px rgba(46, 230, 196, 0.4);
+            --shade: 0 2px 14px rgba(0, 0, 0, 0.65);
+        }
+
+        /* ---------- Basis ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 3vh 20px 14px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Bildebene: etwas groesser als der Viewport, damit der Blur keine
+           weichen Raender an den Kanten erzeugt. */
+        .bg-image {
+            position: fixed;
+            inset: -30px;
+            z-index: -2;
+            background-image: var(--bg-img, none);
+            background-size: cover;
+            background-position: var(--bg-pos, center);
+            background-repeat: no-repeat;
+            filter: blur(var(--bg-blur, 0px));
+        }
+
+        /* Zweite Bildebene, liegt genau ueber der ersten und wird fuer die
+           Ueberblendung der Ekko-Bilder ein- und ausgeblendet. Ausserhalb des
+           Ekko-Themes ist sie unsichtbar und ohne Bild. */
+        .bg-top {
+            opacity: 0;
+            transition: opacity 1.6s ease;
+        }
+
+        /* Langsamer Zoom auf beiden Bildebenen. Beide starten beim Laden und
+           laufen nie neu an, bleiben also waehrend der Blende synchron. Damit
+           steht auch ein Theme mit nur einem Bild nicht komplett still.
+           Ausschalten: animation-Zeile hier entfernen. */
+        @keyframes drift {
+            from { transform: scale(1); }
+            to   { transform: scale(1.06); }
+        }
+
+        .bg-image {
+            animation: drift 90s ease-in-out infinite alternate;
+        }
+
+        /* Schleier: nimmt die Grundfarbe des Themes auf, darueber der
+           urspruengliche Farbverlauf. Faellt das Bild aus, sieht die Seite
+           fast aus wie vorher. */
+        .bg-veil {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background-image: var(--bg-glow), var(--veil);
+            background-repeat: no-repeat;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1180px;
+            animation: fadein 0.5s ease both;
+        }
+
+        @keyframes fadein {
+            from { opacity: 0; transform: translateY(8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .container { animation: none; }
+            .chip, .search-box, .theme-btn { transition: none !important; }
+            .bg-top { transition: none !important; }  /* Rotation laeuft dann gar nicht */
+            .bg-image { animation: none !important; }
+        }
+
+        /* ---------- Theme-Leiste ---------- */
+        .theme-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        .theme-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: var(--surface);
+            -webkit-backdrop-filter: blur(10px) saturate(1.2);
+            backdrop-filter: blur(10px) saturate(1.2);
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            color: var(--muted);
+            font: inherit;
+            font-size: 12.5px;
+            font-weight: 500;
+            padding: 6px 12px;
+            cursor: pointer;
+            transition: border-color 0.15s, color 0.15s, box-shadow 0.15s;
+        }
+
+        .theme-btn:hover {
+            color: var(--text);
+            border-color: var(--accent);
+        }
+
+        .theme-btn.active {
+            color: var(--text);
+            border-color: var(--accent);
+            box-shadow: var(--chip-glow);
+        }
+
+        .theme-dot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background: var(--dot, #888);
+            box-shadow: 0 0 6px var(--dot, transparent);
+        }
+
+        /* ---------- Kopf: Uhr ---------- */
+        header {
+            text-align: center;
+            margin-bottom: 22px;
+        }
+
+        .clock {
+            font-size: 68px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            font-variant-numeric: tabular-nums;
+            line-height: 1.1;
+            color: var(--accent);
+            text-shadow: var(--glow), var(--shade);
+        }
+
+        .greeting {
+            margin-top: 8px;
+            color: var(--muted);
+            font-size: 17px;
+            text-shadow: var(--shade);
+        }
+
+        .greeting .date {
+            color: var(--accent-2);
+        }
+
+        /* Kurzhilfe ganz unten, auf dem Handy ohne Tastatur ueberfluessig */
+        .hint {
+            margin-top: 12px;
+            text-align: center;
+            font-size: 11.5px;
+            line-height: 1.9;
+            color: var(--muted);
+            opacity: 0.75;
+            text-shadow: var(--shade);
+        }
+
+        .hint b { color: var(--accent-2); font-weight: 600; }
+
+        @media (max-width: 700px) {
+            .hint { display: none; }
+        }
+
+        /* ---------- Wetter ---------- */
+        [hidden] { display: none !important; }
+
+        /* Berlin, mittig unter der Begruessung */
+        .wx {
+            margin-top: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            text-shadow: var(--shade);
+        }
+
+        .wx-now {
+            display: flex;
+            align-items: baseline;
+            gap: 9px;
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--text);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .wx-now .wx-icon { font-size: 21px; }
+        .wx-now .wx-city { font-size: 15px; font-weight: 500; color: var(--muted); }
+        .wx-now .wx-desc { font-size: 15px; font-weight: 400; color: var(--muted); }
+
+        .wx-next {
+            font-size: 14px;
+            color: var(--muted);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .wx-next .wx-range { color: var(--accent-2); font-weight: 600; }
+
+        /* Ulan-Bator, klein oben rechts */
+        .wx-far {
+            position: fixed;
+            top: 14px;
+            right: 16px;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 1px;
+            background: var(--surface);
+            -webkit-backdrop-filter: blur(10px) saturate(1.2);
+            backdrop-filter: blur(10px) saturate(1.2);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 8px 12px;
+            font-size: 12px;
+            line-height: 1.35;
+            color: var(--muted);
+            text-shadow: var(--shade);
+        }
+
+        .wx-far .wx-far-line {
+            font-size: 14px;
+            color: var(--text);
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* ---------- Suche ---------- */
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--surface);
+            -webkit-backdrop-filter: blur(12px) saturate(1.2);
+            backdrop-filter: blur(12px) saturate(1.2);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            margin-bottom: 30px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .search-box:focus-within {
+            border-color: var(--accent);
+            box-shadow: var(--chip-glow);
+        }
+
+        .search-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text);
+            font: inherit;
+            font-size: 17px;
+            padding: 16px 20px;
+        }
+
+        .search-input::placeholder {
+            color: var(--muted);
+        }
+
+        .search-hint {
+            color: var(--muted);
+            font-size: 13px;
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            padding: 2px 8px;
+            margin-right: 12px;
+            user-select: none;
+        }
+
+        .search-btn {
+            background: var(--accent);
+            color: var(--accent-text);
+            border: none;
+            border-radius: 10px;
+            font: inherit;
+            font-size: 15px;
+            font-weight: 600;
+            padding: 10px 22px;
+            margin: 6px;
+            cursor: pointer;
+            box-shadow: var(--chip-glow);
+        }
+
+        .search-btn:hover {
+            filter: brightness(1.08);
+        }
+
+        /* ---------- Link-Gruppen ---------- */
+        /* Die Gruppen stehen nebeneinander, damit die Seite ohne Scrollen auf
+           einen Schirm passt: oben drei Streifen, "Maerkte" mit zwei kurzen
+           Links schmaler als die anderen. Schmale Schirme stellen alles wieder
+           untereinander. */
+        .groups {
+            display: grid;
+            grid-template-columns: 1fr 0.55fr 1fr;
+            gap: 22px 24px;
+            align-items: start;
+        }
+
+        /* "Meine Projekte" waechst am schnellsten und bekommt deshalb eine
+           eigene Reihe ueber die volle Breite. Dort stehen sechs Links in einer
+           Zeile; in einer schmalen Spalte waeren es zwei, und jedes neue
+           Projekt haette die Seite laenger gemacht. */
+        .group-wide {
+            grid-column: 1 / -1;
+        }
+
+        .group-label {
+            color: var(--accent-2);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            text-shadow: var(--shade);
+        }
+
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--surface);
+            -webkit-backdrop-filter: blur(10px) saturate(1.2);
+            backdrop-filter: blur(10px) saturate(1.2);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 10px 16px;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            transition: background 0.15s, border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+        }
+
+        .chip:hover {
+            background: var(--surface-hover);
+            border-color: var(--accent);
+            box-shadow: var(--chip-glow);
+            transform: translateY(-2px);
+        }
+
+        .chip:focus-visible,
+        .search-btn:focus-visible,
+        .theme-btn:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        .chip-icon {
+            font-size: 18px;
+        }
+
+        @media (max-width: 900px) {
+            /* oben rechts sitzt auf schmalen Schirmen die Theme-Leiste */
+            .wx-far { top: auto; bottom: 12px; right: 12px; }
+            /* zu schmal fuer vier Streifen: die Gruppen wieder untereinander */
+            .groups { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 480px) {
+            .clock { font-size: 48px; }
+            .chip { padding: 11px 14px; font-size: 14px; }
+            .search-hint { display: none; }
+            .theme-btn span.label { display: none; } /* mobil nur Farbpunkte */
+            .theme-btn { padding: 8px; }
+        }
+    </style>
+</head>
+<body data-theme="neon-pink">
+    <div class="bg-image" id="bgBase" aria-hidden="true"></div>
+    <div class="bg-image bg-top" id="bgTop" aria-hidden="true"></div>
+    <div class="bg-veil" aria-hidden="true"></div>
+
+    <!-- steht bewusst ausserhalb von .container: der Container hat eine
+         transform-Animation und wuerde position: fixed an sich binden -->
+    <aside class="wx-far" id="wxFar">
+        <div>Ulan-Bator</div>
+        <div class="wx-far-line" id="wxFarTime">–:–</div>
+        <div class="wx-far-line" id="wxFarWx"></div>
+    </aside>
+
+    <div class="container">
+
+        <!-- Theme-Auswahl -->
+        <nav class="theme-bar" id="themeBar" aria-label="Farbschema wählen">
+            <button class="theme-btn" data-set="neon-pink"><span class="theme-dot" style="--dot:#ff2ea6"></span><span class="label">Neon Pink</span></button>
+            <button class="theme-btn" data-set="cyberpunk"><span class="theme-dot" style="--dot:#00f0ff"></span><span class="label">Cyberpunk</span></button>
+            <button class="theme-btn" data-set="synthwave"><span class="theme-dot" style="--dot:#7a5cff"></span><span class="label">Synthwave</span></button>
+            <button class="theme-btn" data-set="miami"><span class="theme-dot" style="--dot:#ff6f61"></span><span class="label">Miami</span></button>
+            <button class="theme-btn" data-set="sakura"><span class="theme-dot" style="--dot:#ff9fc7"></span><span class="label">Sakura</span></button>
+            <button class="theme-btn" data-set="jungle"><span class="theme-dot" style="--dot:#4ade80"></span><span class="label">Jungle</span></button>
+            <button class="theme-btn" data-set="matrix"><span class="theme-dot" style="--dot:#00ff41"></span><span class="label">Matrix</span></button>
+            <button class="theme-btn" data-set="ocean"><span class="theme-dot" style="--dot:#38bdf8"></span><span class="label">Ocean</span></button>
+            <button class="theme-btn" data-set="lcars"><span class="theme-dot" style="--dot:#ff9c00"></span><span class="label">Star Trek</span></button>
+            <button class="theme-btn" data-set="space"><span class="theme-dot" style="--dot:#9d8cff"></span><span class="label">Space</span></button>
+            <button class="theme-btn" data-set="ekko"><span class="theme-dot" style="--dot:#2ee6c4"></span><span class="label">Ekko</span></button>
+        </nav>
+
+        <header>
+            <div class="clock" id="clock">–:–</div>
+            <div class="greeting"><span id="greeting">Hallo</span> · <span class="date" id="date"></span></div>
+
+            <div class="wx" id="wx" hidden>
+                <div class="wx-now">
+                    <span class="wx-icon" id="wxIcon"></span>
+                    <span id="wxTemp"></span>
+                    <span class="wx-city">Berlin</span>
+                    <span class="wx-desc" id="wxDesc"></span>
+                </div>
+                <div class="wx-next">Morgen <span id="wxNextIcon"></span> <span class="wx-range" id="wxNextRange"></span> <span id="wxNextDesc"></span></div>
+            </div>
+        </header>
+
+        <form action="https://www.google.com/search" method="get" class="search-box" id="searchForm">
+            <input type="text" name="q" id="search" class="search-input" placeholder="Google durchsuchen, oder y w gh + Begriff…" autocomplete="off" autofocus>
+            <span class="search-hint" id="searchHint">/</span>
+            <button type="submit" class="search-btn">Suchen</button>
+        </form>
+
+        <div class="groups">
+            <div class="group">
+                <div class="group-label">Täglich</div>
+                <div class="chips">
+                    <a href="https://www.youtube.com" class="chip" target="_blank" rel="noopener"><span class="chip-icon">📺</span>YouTube</a>
+                    <a href="https://mail.google.com" class="chip" target="_blank" rel="noopener"><span class="chip-icon">✉️</span>Gmail</a>
+                    <a href="https://drive.google.com/drive/home" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🗂️</span>Drive</a>
+                    <a href="https://www.reddit.com" class="chip" target="_blank" rel="noopener"><span class="chip-icon">👽</span>Reddit</a>
+                    <a href="https://twitter.com" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🐦</span>Twitter</a>
+                </div>
+            </div>
+
+            <div class="group">
+                <div class="group-label">Märkte</div>
+                <div class="chips">
+                    <a href="https://de.finance.yahoo.com/quote/NVDA/" class="chip" target="_blank" rel="noopener"><span class="chip-icon">📈</span>NVIDIA</a>
+                    <a href="https://de.finance.yahoo.com/quote/HY9H.SG/" class="chip" target="_blank" rel="noopener"><span class="chip-icon">💾</span>SK Hynix</a>
+                </div>
+            </div>
+
+            <div class="group">
+                <div class="group-label">KI &amp; Code</div>
+                <div class="chips">
+                    <a href="https://claude.ai" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🤖</span>Claude</a>
+                    <a href="https://gemini.google.com" class="chip" target="_blank" rel="noopener"><span class="chip-icon">✨</span>Gemini</a>
+                    <a href="https://github.com/mendeltem?tab=repositories" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🐙</span>Meine Repos</a>
+                    <a href="https://www.researchgate.net/profile/Uchralt-Temuulen-2" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🔬</span>ResearchGate</a>
+                </div>
+            </div>
+
+            <div class="group group-wide">
+                <div class="group-label">Meine Projekte</div>
+                <div class="chips">
+                    <a href="https://mendeltem.github.io/local-reference-manager/refman.html" class="chip" target="_blank" rel="noopener"><span class="chip-icon">📚</span>Referenzen</a>
+                    <a href="https://mendeltem.github.io/mrt-atlas-trainer/" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🧠</span>MRT-Atlas-Trainer</a>
+                    <a href="https://mendeltem.github.io/3D-Body-Workshop/" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🧍</span>3D Body Workshop</a>
+                    <a href="https://mendeltem.github.io/AI_Companys/nvidia-oekosystem.html" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🟩</span>NVIDIA-Ökosystem</a>
+                    <a href="https://mendeltem.github.io/Supply_Atlas3D/" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🌍</span>Supply Atlas 3D</a>
+                    <a href="https://mendeltem.github.io/ai_use_cases_overview/" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🗂️</span>KI-Use-Cases</a>
+                    <a href="https://github.com/mendeltem/blackbeard_wikki" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🏴‍☠️</span>Blackbeard-Wiki</a>
+                    <a href="https://mendeltem.github.io/menschenlesen/" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🕵️</span>Menschen lesen</a>
+                    <a href="https://mendeltem.github.io/EEG/" class="chip" target="_blank" rel="noopener"><span class="chip-icon">〰️</span>EEG Explorer</a>
+                    <a href="https://mendeltem.github.io/wetter/wetter.html" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🌦️</span>Wetter Berlin</a>
+                    <a href="https://mendeltem.github.io/nvidia-roadmap/" class="chip" target="_blank" rel="noopener"><span class="chip-icon">🗺️</span>NVIDIA-Roadmap</a>
+                    <a href="https://mendeltem.github.io/AI_news/AI_new.html" class="chip" target="_blank" rel="noopener"><span class="chip-icon">📰</span>KI-Lagemeldung</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="hint" id="hint"></div>
+    </div>
+
+    <script>
+        // ---------- Elemente ----------
+        const clockEl = document.getElementById('clock');
+        const dateEl = document.getElementById('date');
+        const greetingEl = document.getElementById('greeting');
+        const searchEl = document.getElementById('search');
+        const searchForm = document.getElementById('searchForm');
+        const hintBoxEl = document.getElementById('searchHint');
+        const hintEl = document.getElementById('hint');
+        const farTimeEl = document.getElementById('wxFarTime');
+        const farWxEl = document.getElementById('wxFarWx');
+        const wxEl = document.getElementById('wx');
+        const bgBase = document.getElementById('bgBase');
+        const bgTop = document.getElementById('bgTop');
+        const faviconEl = document.getElementById('favicon');
+        const themeBar = document.getElementById('themeBar');
+        const buttons = Array.prototype.slice.call(themeBar.querySelectorAll('.theme-btn'));
+        const chips = Array.prototype.slice.call(document.querySelectorAll('.chip'));
+
+        // ---------- Hintergrund-Rotation ----------
+        // Jedes Theme hat eine Liste, die Bilder liegen im Ordner bg/ eine
+        // Ebene ueber dieser Datei (../bg/). Ein weiteres Bild ist eine
+        // Zeile mehr, kein Umbau.
+        // Ein Eintrag ist ein Pfad oder ein Objekt mit filter, falls die
+        // Helligkeit angeglichen werden muss.
+        // Zwei Ebenen: bgBase zeigt das aktuelle Bild, bgTop blendet das
+        // naechste darueber und uebergibt es danach ohne Animation an bgBase.
+        const rotations = {
+            'neon-pink': ['../bg/neon-pink/01.webp'],
+            cyberpunk: ['../bg/cyberpunk/01.webp'],
+            synthwave: ['../bg/synthwave/01.webp'],
+            miami: ['../bg/miami/01.webp'],
+            sakura: ['../bg/sakura/01.webp'],
+            jungle: ['../bg/jungle/01.webp'],
+            matrix: ['../bg/matrix/01.webp'],
+            ocean: ['../bg/ocean/01.webp'],
+            lcars: ['../bg/lcars/01.webp'],
+            ekko: [
+                '../bg/ekko/01.webp',
+                '../bg/ekko/02.webp',
+                '../bg/ekko/03.webp',
+                '../bg/ekko/04.webp',
+                '../bg/ekko/05.webp',
+                '../bg/ekko/06.webp'
+            ],
+            space: [
+                { img: '../bg/space/01.webp', filter: 'brightness(1.8)' },
+                { img: '../bg/space/02.webp', filter: 'brightness(0.72)' },
+                { img: '../bg/space/03.webp', filter: 'brightness(1.13)' },
+                { img: '../bg/space/04.webp', filter: 'brightness(0.7)' },
+                { img: '../bg/space/05.webp', filter: 'brightness(0.95)' },
+                { img: '../bg/space/06.webp', filter: 'brightness(0.7)' },
+                { img: '../bg/space/07.webp', filter: 'brightness(0.86)' }
+            ]
+        };
+
+        const rotHold = 12000;   // ms, wie lange ein Bild steht
+        const rotFade = 1600;    // ms, Dauer der Blende (= Wert in .bg-top)
+        const rotStill = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        Object.keys(rotations).forEach(function (name) {
+            rotations[name] = rotations[name].map(function (e) {
+                return typeof e === 'string' ? { img: e, filter: 'none' } : e;
+            });
+        });
+
+        let rotList = [];
+        let rotIndex = 0;
+        let rotTimer = null;
+
+        function rotShow(el, shot) {
+            el.style.backgroundImage = 'url("' + shot.img + '")';
+            el.style.filter = shot.filter;
+        }
+
+        function rotNext() {
+            if (rotList.length < 2) return;
+            rotIndex = (rotIndex + 1) % rotList.length;
+            const shot = rotList[rotIndex];
+            const pre = new Image();                 // erst laden, dann blenden
+            pre.onload = pre.onerror = function () {
+                rotShow(bgTop, shot);
+                bgTop.style.opacity = '1';
+                setTimeout(function () {
+                    bgBase.style.backgroundImage = bgTop.style.backgroundImage;
+                    bgBase.style.filter = bgTop.style.filter;
+                    bgTop.style.transition = 'none';
+                    bgTop.style.opacity = '0';
+                    void bgTop.offsetWidth;          // Reflow, sonst faellt die naechste Blende aus
+                    bgTop.style.transition = '';
+                }, rotFade + 60);
+            };
+            pre.src = shot.img;
+        }
+
+        function rotStart(name) {
+            clearInterval(rotTimer);
+            rotTimer = null;
+            bgBase.style.backgroundImage = '';
+            bgBase.style.filter = '';
+            bgTop.style.backgroundImage = '';
+            bgTop.style.filter = '';
+            bgTop.style.opacity = '0';
+            rotList = rotations[name] || [];
+            if (rotList.length < 2) return;          // ein Bild steht schon im CSS
+            rotIndex = Math.floor(Math.random() * rotList.length);
+            rotShow(bgBase, rotList[rotIndex]);
+            if (!rotStill) rotTimer = setInterval(rotNext, rotHold);
+        }
+
+        // ---------- Themes, auch nach Tageszeit ----------
+        // Ein Eintrag gilt ab seiner Stunde bis zum naechsten, der letzte
+        // laeuft ueber Mitternacht weiter. Eine eigene Wahl gilt bis zum Ende
+        // des laufenden Abschnitts, danach uebernimmt wieder die Uhr.
+        const themeClock = [
+            { from: 5, name: 'sakura' },    // morgens hell
+            { from: 11, name: 'ocean' },    // tagsueber
+            { from: 17, name: 'ekko' },     // abends
+            { from: 22, name: 'space' }     // nachts
+        ];
+
+        function slotNow() {
+            const h = new Date().getHours();
+            let i = themeClock.length - 1;           // deckt die Stunden nach Mitternacht ab
+            themeClock.forEach(function (s, k) { if (h >= s.from) i = k; });
+            return i;
+        }
+
+        // ---------- Symbol in der Tableiste ----------
+        // Wechselt mit dem Theme. Das SVG steckt als Data-URI im href, eine
+        // eigene Datei braucht es nicht. Safari zeigt SVG-Symbole nicht an
+        // und bleibt beim Standard.
+        function faviconPaint() {
+            const css = getComputedStyle(document.body);
+            const accent = css.getPropertyValue('--accent').trim() || '#ff2ea6';
+            const ink = css.getPropertyValue('--accent-text').trim() || '#14020d';
+            const svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">'
+                + '<rect width="64" height="64" rx="14" fill="' + accent + '"/>'
+                + '<g stroke="' + ink + '" stroke-width="6" stroke-linecap="round">'
+                + '<path d="M32 32V18"/><path d="M32 32h11"/></g></svg>';
+            faviconEl.href = 'data:image/svg+xml,' + encodeURIComponent(svg);
+        }
+
+        function setTheme(name, manual) {
+            document.body.dataset.theme = name;
+            buttons.forEach(function (b) {
+                b.classList.toggle('active', b.dataset.set === name);
+            });
+            rotStart(name);
+            faviconPaint();
+            if (manual) {
+                try {
+                    localStorage.setItem('theme', JSON.stringify({ name: name, slot: slotNow() }));
+                } catch (e) { /* z.B. Privatmodus: die Wahl gilt dann nur hier */ }
+            }
+        }
+
+        let lastSlot = -1;
+
+        function themeByClock() {
+            const slot = slotNow();
+            if (slot === lastSlot) return;           // nur beim Wechsel eingreifen
+            lastSlot = slot;
+            let pick = null;
+            try {
+                pick = JSON.parse(localStorage.getItem('theme') || 'null');
+            } catch (e) { }
+            const own = pick && pick.slot === slot && document.querySelector('[data-set="' + pick.name + '"]');
+            setTheme(own ? pick.name : themeClock[slot].name, false);
+        }
+
+        themeBar.addEventListener('click', function (e) {
+            const btn = e.target.closest('.theme-btn');
+            if (btn) setTheme(btn.dataset.set, true);
+        });
+
+        // ---------- Uhr, Begruessung, zweite Zeitzone ----------
+        // Die Zeitzone rechnet Intl aus der IANA-Kennung, die Datenbank bringt
+        // der Browser mit. Wer die Stadt wechselt, muss auch die Koordinaten
+        // in wxUrl anpassen.
+        const farTz = 'Asia/Ulaanbaatar';   // Westmongolien waere 'Asia/Hovd'
+        const isoDay = { year: 'numeric', month: '2-digit', day: '2-digit' };
+
+        function update() {
+            const now = new Date();
+            clockEl.textContent = now.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+            dateEl.textContent = now.toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long' });
+            const h = now.getHours();
+            greetingEl.textContent = h < 5 ? 'Gute Nacht' : h < 11 ? 'Guten Morgen' : h < 18 ? 'Guten Tag' : 'Guten Abend';
+
+            const here = now.toLocaleDateString('en-CA', isoDay);
+            const there = now.toLocaleDateString('en-CA', Object.assign({ timeZone: farTz }, isoDay));
+            farTimeEl.textContent = now.toLocaleTimeString('de-DE', { timeZone: farTz, hour: '2-digit', minute: '2-digit' })
+                + (there > here ? ' morgen' : there < here ? ' gestern' : '');
+
+            themeByClock();
+        }
+
+        // ---------- Wetter ----------
+        // Open-Meteo braucht keinen Schluessel und schickt
+        // Access-Control-Allow-Origin: *, laeuft also auch aus einer lokalen
+        // Datei. Ein Aufruf liefert beide Orte in der Reihenfolge der
+        // Koordinaten: erst Berlin, dann Ulan-Bator.
+        const wxUrl = 'https://api.open-meteo.com/v1/forecast'
+            + '?latitude=52.52,47.9186&longitude=13.405,106.9176'
+            + '&current=temperature_2m,weather_code,is_day'
+            + '&daily=weather_code,temperature_2m_max,temperature_2m_min'
+            + '&timezone=auto&forecast_days=2';
+        const wxMaxAge = 15 * 60 * 1000;   // so lange gilt der gespeicherte Stand
+
+        // WMO-Wettercodes, wie Open-Meteo sie liefert
+        const wmo = {
+            0: ['klar', '\u2600\ufe0f'], 1: ['heiter', '\ud83c\udf24\ufe0f'],
+            2: ['teils bewölkt', '\u26c5'], 3: ['bedeckt', '\u2601\ufe0f'],
+            45: ['Nebel', '\ud83c\udf2b\ufe0f'], 48: ['Reifnebel', '\ud83c\udf2b\ufe0f'],
+            51: ['leichter Niesel', '\ud83c\udf26\ufe0f'], 53: ['Niesel', '\ud83c\udf26\ufe0f'],
+            55: ['starker Niesel', '\ud83c\udf26\ufe0f'],
+            56: ['gefrierender Niesel', '\ud83c\udf27\ufe0f'], 57: ['gefrierender Niesel', '\ud83c\udf27\ufe0f'],
+            61: ['leichter Regen', '\ud83c\udf27\ufe0f'], 63: ['Regen', '\ud83c\udf27\ufe0f'],
+            65: ['starker Regen', '\ud83c\udf27\ufe0f'],
+            66: ['gefrierender Regen', '\ud83c\udf27\ufe0f'], 67: ['gefrierender Regen', '\ud83c\udf27\ufe0f'],
+            71: ['leichter Schnee', '\ud83c\udf28\ufe0f'], 73: ['Schnee', '\ud83c\udf28\ufe0f'],
+            75: ['starker Schnee', '\ud83c\udf28\ufe0f'], 77: ['Schneegriesel', '\ud83c\udf28\ufe0f'],
+            80: ['Regenschauer', '\ud83c\udf26\ufe0f'], 81: ['Regenschauer', '\ud83c\udf26\ufe0f'],
+            82: ['kräftige Schauer', '\u26c8\ufe0f'],
+            85: ['Schneeschauer', '\ud83c\udf28\ufe0f'], 86: ['Schneeschauer', '\ud83c\udf28\ufe0f'],
+            95: ['Gewitter', '\u26c8\ufe0f'], 96: ['Gewitter, Hagel', '\u26c8\ufe0f'],
+            99: ['Gewitter, Hagel', '\u26c8\ufe0f']
+        };
+
+        function wxText(code) { return (wmo[code] || ['', '\u00b7'])[0]; }
+
+        function wxIcon(code, isDay) {
+            if (isDay === 0 && code <= 1) return '\ud83c\udf19';   // nachts keine Sonne
+            return (wmo[code] || ['', '\u00b7'])[1];
+        }
+
+        function wxShow(data) {
+            const b = data[0], u = data[1];
+            document.getElementById('wxIcon').textContent = wxIcon(b.current.weather_code, b.current.is_day);
+            document.getElementById('wxTemp').textContent = Math.round(b.current.temperature_2m) + '°';
+            document.getElementById('wxDesc').textContent = wxText(b.current.weather_code);
+            document.getElementById('wxNextIcon').textContent = wxIcon(b.daily.weather_code[1], 1);
+            document.getElementById('wxNextRange').textContent =
+                Math.round(b.daily.temperature_2m_min[1]) + ' bis ' + Math.round(b.daily.temperature_2m_max[1]) + '°';
+            document.getElementById('wxNextDesc').textContent = wxText(b.daily.weather_code[1]);
+            wxEl.hidden = false;
+
+            farWxEl.textContent = wxIcon(u.current.weather_code, u.current.is_day)
+                + ' ' + Math.round(u.current.temperature_2m) + '°';
+        }
+
+        function wxLoad() {
+            let cache = null;
+            try {
+                cache = JSON.parse(localStorage.getItem('wx') || 'null');
+            } catch (e) { }
+            if (cache) wxShow(cache.data);                    // erst der alte Stand
+            if (cache && Date.now() - cache.time < wxMaxAge) return;
+            fetch(wxUrl).then(function (r) {
+                return r.json();
+            }).then(function (data) {
+                wxShow(data);
+                try {
+                    localStorage.setItem('wx', JSON.stringify({ time: Date.now(), data: data }));
+                } catch (e) { }
+            }).catch(function () { /* offline: es bleibt beim Cache oder leer */ });
+        }
+
+        // ---------- Suche mit Praefixen ----------
+        // Das erste Wort entscheidet: "y katzen" geht zu YouTube, alles ohne
+        // bekanntes Praefix zu Google. Neues Ziel = eine Zeile mehr.
+        const routes = {
+            y: ['YouTube', 'https://www.youtube.com/results?search_query='],
+            w: ['Wikipedia', 'https://de.wikipedia.org/w/index.php?search='],
+            gh: ['GitHub', 'https://github.com/search?q='],
+            r: ['Reddit', 'https://www.reddit.com/search/?q='],
+            gs: ['Scholar', 'https://scholar.google.com/scholar?q='],
+            pm: ['PubMed', 'https://pubmed.ncbi.nlm.nih.gov/?term='],
+            ar: ['arXiv', 'https://arxiv.org/search/?searchtype=all&query='],
+            yf: ['Yahoo Finance', 'https://de.finance.yahoo.com/lookup?s='],
+            mp: ['Maps', 'https://www.google.com/maps/search/']
+        };
+        const googleUrl = 'https://www.google.com/search?q=';
+
+        function routeOf(text) {
+            const cut = text.indexOf(' ');
+            if (cut < 0) return null;
+            const key = text.slice(0, cut).toLowerCase();
+            if (!routes[key]) return null;
+            return { target: routes[key], rest: text.slice(cut + 1).trim() };
+        }
+
+        searchEl.addEventListener('input', function () {
+            const r = routeOf(searchEl.value);
+            hintBoxEl.textContent = r ? r.target[0] : '/';
+        });
+
+        searchForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const text = searchEl.value.trim();
+            if (!text) return;
+            const r = routeOf(text);
+            window.location.href = r && r.rest
+                ? r.target[1] + encodeURIComponent(r.rest)
+                : googleUrl + encodeURIComponent(text);
+        });
+
+        // ---------- Tastenkuerzel ----------
+        // 1 bis 9 oeffnen die Links der Reihe nach, t wechselt das Theme,
+        // b schaltet den Hintergrund weiter, / springt in die Suche.
+        document.addEventListener('keydown', function (e) {
+            if (e.ctrlKey || e.altKey || e.metaKey) return;
+            const typing = document.activeElement === searchEl;
+            if (typing) {
+                if (e.key === 'Escape') searchEl.blur();
+                return;
+            }
+            if (e.key === '/') {
+                e.preventDefault();
+                searchEl.focus();
+            } else if (e.key >= '1' && e.key <= '9') {
+                const chip = chips[Number(e.key) - 1];
+                if (chip) chip.click();
+            } else if (e.key === 't') {
+                const names = buttons.map(function (b) { return b.dataset.set; });
+                const i = names.indexOf(document.body.dataset.theme);
+                setTheme(names[(i + 1) % names.length], true);
+            } else if (e.key === 'b') {
+                rotNext();
+            }
+        });
+
+        // Kurzhilfe unten aus derselben Tabelle, damit sie nie veraltet
+        hintEl.innerHTML = '<b>1</b>–<b>9</b> Links · <b>t</b> Theme · <b>b</b> Hintergrund · <b>/</b> Suche<br>'
+            + Object.keys(routes).map(function (k) {
+                return '<b>' + k + '</b> ' + routes[k][0];
+            }).join(' · ');
+
+        // ---------- Start ----------
+        update();
+        setInterval(update, 10000);
+        wxLoad();
+
+        document.addEventListener('visibilitychange', function () {
+            if (document.hidden) {
+                clearInterval(rotTimer);
+                rotTimer = null;
+            } else {
+                if (rotList.length > 1 && !rotStill && !rotTimer) rotTimer = setInterval(rotNext, rotHold);
+                update();
+                wxLoad();      // holt nur neu, wenn der Cache abgelaufen ist
+            }
+        });
+    </script>
+</body>
+</html>
